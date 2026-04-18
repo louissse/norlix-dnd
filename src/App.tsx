@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { Analytics } from '@vercel/analytics/react'
 import { CharacterForm } from './components/CharacterForm'
 import { LoadingScreen } from './components/LoadingScreen'
 import { QuoteResult } from './components/QuoteResult'
@@ -57,6 +58,7 @@ export default function App() {
       {step === 'result' && character && quote && (
         <QuoteResult character={character} quote={quote} onReset={handleReset} />
       )}
+      <Analytics />
     </>
   )
 }
