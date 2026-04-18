@@ -7,6 +7,7 @@ import {
   type CharacterClass,
   type Race,
 } from '../types/character'
+import { ShieldIcon } from './ShieldIcon'
 
 interface CharacterFormProps {
   onSubmit: (character: Character) => void
@@ -34,7 +35,8 @@ export function CharacterForm({ onSubmit }: CharacterFormProps) {
       <div className="w-full max-w-lg">
         {/* Header */}
         <div className="mb-10">
-          <p className="text-xs font-semibold tracking-widest text-stone-400 uppercase mb-3">
+          <p className="flex items-center gap-2 text-xs font-semibold tracking-widest text-stone-400 uppercase mb-3">
+            <ShieldIcon className="w-3.5 h-3.5 text-stone-400" />
             Adventurer's Mutual Insurance Guild
           </p>
           <h1 className="text-3xl font-semibold text-stone-900 tracking-tight">

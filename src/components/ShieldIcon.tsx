@@ -1,0 +1,15 @@
+export function ShieldIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 32 32"
+      className={className}
+      aria-hidden="true"
+    >
+      <path
+        d="M16 2L4 7v10c0 7 5.5 12.5 12 14 6.5-1.5 12-7 12-14V7L16 2z"
+        fill="currentColor"
+      />
+    </svg>
+  )
+}

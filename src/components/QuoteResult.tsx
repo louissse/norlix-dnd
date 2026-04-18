@@ -1,5 +1,6 @@
 import type { Character } from '../types/character'
 import type { Quote, RiskTier } from '../types/quote'
+import { ShieldIcon } from './ShieldIcon'
 
 interface QuoteResultProps {
   character: Character
@@ -39,7 +40,8 @@ export function QuoteResult({ character, quote, onReset }: QuoteResultProps) {
 
         {/* Header */}
         <div className="mb-8">
-          <p className="text-xs font-semibold tracking-widest text-stone-400 uppercase mb-3">
+          <p className="flex items-center gap-2 text-xs font-semibold tracking-widest text-stone-400 uppercase mb-3">
+            <ShieldIcon className="w-3.5 h-3.5 text-stone-400" />
             Adventurer's Mutual Insurance Guild
           </p>
           <h1 className="text-3xl font-semibold text-stone-900 tracking-tight">
