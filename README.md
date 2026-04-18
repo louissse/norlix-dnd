@@ -1,73 +1,69 @@
-# React + TypeScript + Vite
+# D&D Character Insurance
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A small side project built as part of an application to Norlix — a company building insurance and pension from scratch.
 
-Currently, two official plugins are available:
+The idea: what if you could get an insurance quote for your D&D character? You fill in your class, race, level, and alignment. A rule-based risk engine calculates your coverage and premium (in gold pieces). Then an AI underwriter gives you a short, dry assessment of your risk profile.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+It's small, it's playful, and it uses the same stack Norlix uses: React, TypeScript, and Tailwind.
 
-## React Compiler
+**Live:** [link]
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Tech
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- React + TypeScript + Vite
+- Tailwind CSS
+- Gemini 2.5 Flash (AI narrative)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+No external UI libraries. No routing library. State lives in `App.tsx` and moves forward through three steps: form → loading → result.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Structure
+
+```
+src/
+  components/
+    CharacterForm.tsx   # Step 1 — character input
+    LoadingScreen.tsx   # Step 2 — animated loading with flavor text
+    QuoteResult.tsx     # Step 3 — risk score, coverage lines, AI narrative
+  lib/
+    riskEngine.ts       # Pure scoring logic — no side effects
+    gemini.ts           # Gemini API call + prompt
+  types/
+    character.ts        # Character shape + allowed values
+    quote.ts            # Quote shape + RiskTier
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+The risk engine is intentionally kept pure and separate from the AI call. It runs synchronously the moment the form is submitted. The Gemini call fires at the same time and runs in parallel with the loading animation — so there's no extra wait in most cases.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## A few decisions worth noting
+
+**Thin client, logic in one place.** The risk scoring (`riskEngine.ts`) is self-contained and has no dependencies. It's easy to test, easy to swap out, and easy to reason about.
+
+**AI as a layer on top, not a dependency.** If the Gemini call fails, the quote still works. The AI narrative is an enhancement, not load-bearing.
+
+**Step state over a router.** Three screens, one flow, no URL changes needed. A `type Step` union in `App.tsx` is all it takes.
+
+---
+
+## Run locally
+
+```bash
+npm install
+```
+
+Create a `.env` file (see `.env.example`):
+
+```
+VITE_GEMINI_API_KEY=your_gemini_api_key_here
+```
+
+Get a free key at [aistudio.google.com/apikey](https://aistudio.google.com/apikey).
+
+```bash
+npm run dev
 ```
