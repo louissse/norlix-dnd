@@ -18,6 +18,7 @@ const defaultCharacter: Character = {
   level: 1,
   race: 'Human',
   alignment: 'True Neutral',
+  recentAdventure: '',
 }
 
 export function CharacterForm({ onSubmit }: CharacterFormProps) {
@@ -157,6 +158,26 @@ export function CharacterForm({ onSubmit }: CharacterFormProps) {
                 </button>
               ))}
             </div>
+          </div>
+
+          {/* Recent adventure */}
+          <div>
+            <label className="block text-sm font-medium text-stone-700 mb-1.5">
+              Tell us about your latest adventure{' '}
+              <span className="font-normal text-stone-400">(optional)</span>
+            </label>
+            <textarea
+              rows={3}
+              placeholder="e.g. We descended into the Underdark and narrowly survived an encounter with a beholder. I may have accidentally polymorphed the paladin into a goat."
+              value={character.recentAdventure}
+              onChange={(e) =>
+                setCharacter((c) => ({ ...c, recentAdventure: e.target.value }))
+              }
+              className="w-full rounded-lg border border-stone-200 bg-white px-3.5 py-2.5 text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-stone-900 focus:border-transparent transition resize-none"
+            />
+            <p className="text-xs text-stone-400 mt-1">
+              Our underwriters use this to assess situational risk factors.
+            </p>
           </div>
 
           {/* Submit */}

@@ -47,4 +47,5 @@ export interface Character {
   level: number
   race: Race
   alignment: Alignment
+  recentAdventure: string
 }
