@@ -6,7 +6,7 @@ The idea: what if you could get an insurance quote for your D&D character? You f
 
 It's small, it's playful, and it uses the same stack Norlix uses: React, TypeScript, and Tailwind.
 
-**Live:** [link coming after deploy]
+**Live:** https://norlix-dnd.vercel.app
 
 ---
 
