@@ -1,10 +1,6 @@
 import type { Character } from '../types/character'
 import type { Quote } from '../types/quote'
 
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY
-const API_URL =
-  'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'
-
 function buildPrompt(character: Character, quote: Quote): string {
   const adventureContext = character.recentAdventure.trim()
     ? `\n- Recent adventure: ${character.recentAdventure.trim()}`
@@ -24,37 +20,22 @@ export async function generateNarrative(
   character: Character,
   quote: Quote,
 ): Promise<string | null> {
-  if (!API_KEY) {
-    console.warn('VITE_GEMINI_API_KEY is not set — skipping AI narrative')
-    return null
-  }
-
   try {
-    const response = await fetch(`${API_URL}?key=${API_KEY}`, {
+    const response = await fetch('/api/narrative', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: buildPrompt(character, quote) }] }],
-        generationConfig: {
-          temperature: 0.9,
-          maxOutputTokens: 300,
-          thinkingConfig: { thinkingBudget: 0 },
-        },
-      }),
+      body: JSON.stringify({ prompt: buildPrompt(character, quote) }),
     })
 
     if (!response.ok) {
-      console.error('Gemini API error:', response.status, await response.text())
+      console.error('Narrative API error:', response.status)
       return null
     }
 
     const data = await response.json()
-    const text: string | undefined =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text
-
-    return text?.trim() ?? null
+    return data.narrative ?? null
   } catch (err) {
-    console.error('Gemini request failed:', err)
+    console.error('Narrative request failed:', err)
     return null
   }
 }
