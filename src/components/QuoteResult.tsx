@@ -75,13 +75,22 @@ export function QuoteResult({ character, quote, onReset }: QuoteResultProps) {
         </div>
 
         {/* AI narrative */}
-        {quote.aiNarrative && (
+        {quote.aiNarrative ? (
           <div className="rounded-xl border border-stone-200 bg-stone-50 px-5 py-4 mb-4">
             <p className="text-xs font-semibold tracking-widest text-stone-400 uppercase mb-2">
               Underwriter's assessment
             </p>
             <p className="text-sm text-stone-600 leading-relaxed italic">
               "{quote.aiNarrative}"
+            </p>
+          </div>
+        ) : (
+          <div className="rounded-xl border border-stone-200 bg-stone-50 px-5 py-4 mb-4">
+            <p className="text-xs font-semibold tracking-widest text-stone-400 uppercase mb-2">
+              Underwriter's assessment
+            </p>
+            <p className="text-sm text-stone-400 italic">
+              Our underwriter is unavailable at this time. Given your risk profile, they are probably filing a claim of their own.
             </p>
           </div>
         )}
